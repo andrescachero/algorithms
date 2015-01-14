@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reverse string algorithm</title>  
+  </head>
+  <body>
+    <dl>
+      <dt>Example string:</dt>
+      <dd id="string"></dd>
+      <dt>Reversed string:</dt>
+      <dd id="reversed_string"></dd>
+    </dl>
+    <script type="text/javascript">
+      function reverse_string(string) {
+        var string_array = string.split("");
+        var pos_start = 0;
+        var pos_end = string_array.length - 1;
+
+        while (pos_start < pos_end) {
+          var temp = string_array[pos_end];
+          string_array[pos_end] = string_array[pos_start];
+          string_array[pos_start] = temp;
+          pos_start++;
+          pos_end--;
+        }
+        return string_array.join("");
+      }
+      var string = "This is a string.";
+      document.getElementById("string").innerHTML = string;
+      document.getElementById("reversed_string").innerHTML = reverse_string(string);
+    </script>
+  </body>
+</html>
