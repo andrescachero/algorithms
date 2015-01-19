@@ -1,37 +1,50 @@
-def swap(target_array, i, j)
-  temp = target_array[j]
-  target_array[j] = target_array[i]
-  target_array[i] = temp
-  return target_array
-end
+# Based on https://gist.github.com/aspyct/3433278
+def quicksort(target_array, lo=0, hi=nil)
 
-def partition(target_array, low, high)
-  pivot_index = high
-  pivot_value = target_array[pivot_index]
-  store_index = low
-  (low..high-1).each do |i|
-    if target_array[i] < pivot_value
-      swap(target_array, i, pivot_value)
-      store_index += 1
+  hi = target_array.length - 1 if hi.nil?
+
+  return if lo >= hi
+
+  pivot = target_array[lo]
+
+  min = lo
+  max = hi
+
+  free = min
+  
+  while min < max
+    case free
+    when min
+      if target_array[max] <= pivot #move to the left
+        target_array[free] = target_array[max]
+        free = max
+        min += 1
+      else
+        max -= 1
+      end    
+    when max
+      if target_array[min] >= pivot # move to the right
+        target_array[free] = target_array[min]
+        free = min
+        max -= 1
+      else
+        min += 1
+      end
+    else
+      raise 'Inconsistent state'
     end
   end
-  swap(target_array, store_index, high)
-  return store_index
-end
 
-def quicksort(target_array, low, high)
-  p "#{low}, #{high}"
-  p target_array
-  if low < high
-    p = partition(target_array, low, high)
-    quicksort(target_array, low, p - 1)
-    quicksort(target_array, p + 1, high)
-  end
-  return target_array
+  target_array[free] = pivot
+
+  quicksort(target_array, lo, free - 1)
+  quicksort(target_array, free + 1, hi)
+
 end
 
 test_array = [3,7,5,8,2,1,9,5,4]
-ordered_array = quicksort(test_array.dup, 0, test_array.length-1)
+ordered_array = test_array.dup
+quicksort(ordered_array)
 
-puts "test_array: #{test_array}"
+puts "test_array:    #{test_array}"
 puts "ordered_array: #{ordered_array}"
